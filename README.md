@@ -17,7 +17,7 @@ I used several excellent third party libraries...
 
 ### Requirements
 
-This project currently uses *Python 3*. You may use a [virtualenv](http://python-guide-pt-br.readthedocs.io/en/latest/dev/virtualenvs/)
+This project currently uses *Python 3*. You may use a [virtualenv](https://virtualenv.pypa.io/)
 
 ### How to Run
 
