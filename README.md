@@ -15,12 +15,17 @@ I used several excellent third party libraries...
 - `pyhull` for delaunay triangulation
 - `Shapely` for all kinds of 2D geometry operations
 
+### Requirements
+
+This project currently uses Python 2. You may use a [virtualenv](http://python-guide-pt-br.readthedocs.io/en/latest/dev/virtualenvs/)
+
 ### How to Run
 
 The script will generate several random maps and save them as PNG files.
 
     git clone https://github.com/fogleman/PirateMap.git
     cd PirateMap
+    # make sure you run python2 then
     pip install -r requirements.txt
     python main.py
 
