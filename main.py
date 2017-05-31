@@ -1,14 +1,15 @@
-from alpha_shape import alpha_shape
-from colour import Color
-from poisson_disc import poisson_disc
-from shapely.geometry import Polygon, MultiPolygon, Point
-from xkcd import xkcdify
+import math
+import random
+
 import cairocffi as cairo
+from colour import Color
+from shapely.geometry import Polygon, MultiPolygon, Point
+
 import graph
 import layers
-import math
-import noise
-import random
+from poisson_disc import poisson_disc
+from xkcd import xkcdify
+
 
 def make_layer():
     x = layers.Noise(8).add(layers.Constant(0.6)).clamp()
@@ -78,13 +79,19 @@ def render_curve(dc, points, alpha):
         dc.curve_to(cx, cy, dx, dy, x3, y3)
     # dc.line_to(*points[-1])
 
+
+# https://stackoverflow.com/questions/21892989/what-is-the-good-python3-equivalent-for-auto-tuple-unpacking-in-lambda
+def star(f):
+    return lambda args: f(*args)
+
+
 def find_path(layer, points, threshold):
     x = layers.Noise(4).add(layers.Constant(0.6)).clamp()
     x = x.translate(random.random() * 1000, random.random() * 1000)
     x = x.scale(0.01, 0.01)
     g = graph.make_graph(points, threshold, x)
-    end = max(points, key=lambda (x, y): layer.get(x, y))
-    points.sort(key=lambda (x, y): math.hypot(x - end[0], y - end[1]))
+    end = max(points, key=star(lambda x,y: layer.get(x, y)))
+    points.sort(key=star(lambda x, y: math.hypot(x - end[0], y - end[1])))
     for start in reversed(points):
         path = graph.shortest_path(g, end, start)
         if path:
@@ -169,6 +176,6 @@ def render(seed=None):
 
 if __name__ == '__main__':
     for seed in range(100):
-        print seed
+        print(seed)
         surface = render(seed)
         surface.write_to_png('out%04d.png' % seed)
